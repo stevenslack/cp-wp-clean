@@ -23,7 +23,6 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Turn off File editing from WordPress admin
  */
-
 if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 	define( 'DISALLOW_FILE_EDIT', true );
 }
@@ -42,8 +41,6 @@ class CP_Cleanup {
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
-	 *
-	 * @since     1.0.0
 	 */
 	public static function init() {
 
@@ -115,8 +112,6 @@ class CP_Cleanup {
 	 * Remove Pages
 	 *
 	 * http://codex.wordpress.org/Function_Reference/remove_menu_page
-	 *
-	 * @since    1.0.0
 	 */
 	public function remove_pages() {
 
@@ -141,8 +136,6 @@ class CP_Cleanup {
 
 	/**
 	 * Hide Extraneous Plugin Options from the Menu Bar
-	 *
-	 * @since    1.0.0
 	 */
 	public function remove_admin_bar_links() {
 
@@ -162,8 +155,6 @@ class CP_Cleanup {
 
 	/**
 	 * Cleanup WP Dashboard
-	 *
-	 * @since    1.0.0
 	 */
 	public function remove_dashboard_widgets() {
 		remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );   // Quick Press
@@ -174,8 +165,6 @@ class CP_Cleanup {
 
 	/**
 	 * Allow Editors to Get to Widgets
-	 *
-	 * @since    1.0.0
 	 */
 	public function add_theme_caps() {
 		$role_object = get_role( 'editor' );
@@ -184,8 +173,6 @@ class CP_Cleanup {
 
 	/**
 	 * Remove Customizer Sections
-	 *
-	 * @since    1.0.0
 	 */
 	public function remove_customizer_sections() {
 		global $wp_customize;
@@ -206,8 +193,6 @@ class CP_Cleanup {
 
 	/**
 	 * Remove Admin Notices
-	 *
-	 * @since    1.0.0
 	 */
 	public function remove_admin_notices() {
 		remove_action( 'admin_notices', 'woothemes_updater_notice' );
@@ -215,8 +200,6 @@ class CP_Cleanup {
 
 	/**
 	 * Hide Sensitive Plugins from Plugins Listing
-	 *
-	 * @since    1.0.0
 	 */
 	public function filter_plugins( $plugins ) {
 		$hidden = array(
