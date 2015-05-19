@@ -72,6 +72,10 @@ class CP_Cleanup {
 		add_filter( 'style_loader_src', array( $this, 'remove_wp_ver_css_js' ), 9999 );
 		// remove Wp version from scripts
 		add_filter( 'script_loader_src', array( $this, 'remove_wp_ver_css_js' ), 9999 );
+		// change login URL logo to point to home
+		add_filter( 'login_headerurl', array( $this, 'login_url' ) );
+		// Login title to site title
+		add_filter( 'login_headertitle', array( $this, 'login_title' ) );
 
 	}
 
@@ -214,6 +218,20 @@ class CP_Cleanup {
 			}
 		}
 		return $plugins;
+	}
+
+	/**
+	 * Change Login URL to point to site url / Not WordPress
+	 */
+	public function login_url() { 
+		return home_url(); 
+	}
+
+	/**
+	 * Login Title to Site Name
+	 */
+	public function login_title() { 
+		return get_option( 'blogname' ); 
 	}
 
 }
