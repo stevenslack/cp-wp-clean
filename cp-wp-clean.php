@@ -63,6 +63,8 @@ class CP_Cleanup {
 		add_action( 'customize_register', array( $this, 'remove_customizer_sections' ), 20 );
 		add_action( 'init', array( $this, 'remove_admin_notices' ) );
 		add_action( 'init', array( $this, 'head_cleanup' ) );
+
+		// Don't show advanced Plugins
 		add_filter( 'show_advanced_plugins', '__return_false' );
 		// hide plugins from view
 		add_filter( 'all_plugins', array( $this, 'filter_plugins' ) );
@@ -76,6 +78,9 @@ class CP_Cleanup {
 		add_filter( 'login_headerurl', array( $this, 'login_url' ) );
 		// Login title to site title
 		add_filter( 'login_headertitle', array( $this, 'login_title' ) );
+
+		// Delete the Readme.html file
+		$this->delete_readme();
 
 	}
 
@@ -104,12 +109,36 @@ class CP_Cleanup {
 	}
 
 	/*
-	 * Remove Query Strings From CSS & Javascript
+	 * Obfuscates asset versioning from CSS & Javascript to hide version number
 	 */
 	public function remove_wp_ver_css_js( $src ) {
-		if ( strpos( $src, 'ver=' ) )
-			$src = remove_query_arg( 'ver', $src );
-		return $src;
+		if ( strpos( $src, 'ver=' ) ) {
+
+			$url_array = explode( 'ver=', $src );
+			$current_ver = $url_array[1];
+			$encrypt = substr( md5( $current_ver ), 0, 12 );
+			$src = str_replace( $current_ver, $encrypt, $src );
+
+			return esc_url( $src );
+		}
+	}
+
+	/**
+	 * Deletes the Readme.html file with WordPress version number
+	 */
+	public function delete_readme() {
+
+		if ( file_exists( ABSPATH . 'readme.html' ) ) {
+
+			// if the file resides in ABSPATH
+			unlink( ABSPATH . 'readme.html' ); 
+
+		} elseif( file_exists( dirname( ABSPATH ) . '/readme.html' ) ) {
+
+			// of the file resides one level above the ABSPATH but is not part of another install
+			unlink( dirname( ABSPATH ) . '/readme.html' );
+
+		}
 	}
 
 	/**

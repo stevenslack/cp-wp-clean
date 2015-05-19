@@ -14,7 +14,7 @@ This plugin is meant to be used on a per project basis. You can drop the plugin 
 * Adds theme capabilities to the editor role
 * Removes certain plugins from users view
 * Removes WP version from rss feed
-* Removes asset versioning from scripts and styles
+* Obfuscates asset versioning from CSS & Javascript to hide version number
 * Changes Login Logo & Title to point to Site URL
 
 ## Installation 
