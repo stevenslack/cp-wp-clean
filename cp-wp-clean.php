@@ -8,7 +8,7 @@
  * 
  * 
  * Plugin Name: WordPress Cleanup
- * Plugin URI: http://craftpeak.com/
+ * Plugin URI: http://stevenslack.com/
  * Description: Cleans up WordPress admin and removes unnecessary functions
  * Version: 1.0
  * Author: Steven Slack <steven@s2webpress.com>
@@ -38,7 +38,7 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 /**
  * The Cleanup Class
  */
-class Craftpeak_Cleanup {
+class CP_Cleanup {
 
 	/**
 	 * Instance of this class.
@@ -239,4 +239,4 @@ class Craftpeak_Cleanup {
 	}
 
 }
-Craftpeak_Cleanup::init();
+CP_Cleanup::init();
