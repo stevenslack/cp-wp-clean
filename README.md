@@ -15,6 +15,7 @@ This plugin is meant to be used on a per project basis. You can drop the plugin 
 * Removes certain plugins from users view
 * Removes WP version from rss feed
 * Obfuscates asset versioning from CSS & Javascript to hide version number
+* Deletes the `readme.html` file which contains WordPress version number
 * Changes Login Logo & Title to point to Site URL
 
 ## Installation 
