@@ -2,11 +2,11 @@
 /**
  * Cleans up a WordPress site by removing or customizing certain features
  * Adapted some functions from Cliff Seal: https://gist.github.com/logoscreative/f881dd0473dd60a687d0
- * 
- * This plugin was meant to be modified per project. 
+ *
+ * This plugin was meant to be modified per project.
  * Customize this file and drop it in the mu directory
- * 
- * 
+ *
+ *
  * Plugin Name: WordPress Cleanup
  * Plugin URI: http://stevenslack.com/
  * Description: Cleans up WordPress admin and removes unnecessary functions
@@ -32,22 +32,13 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
  * Uncomment below if you want to disallow the user to add plugins
  */
 // if ( ! defined( 'DISALLOW_FILE_MODS' ) ) {
-// 	define( 'DISALLOW_FILE_MODS', true );
+//  define( 'DISALLOW_FILE_MODS', true );
 // }
 
 /**
  * The Cleanup Class
  */
 class CP_Cleanup {
-
-	/**
-	 * Instance of this class.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @var      object
-	 */
-	protected static $instance = null;
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -61,6 +52,11 @@ class CP_Cleanup {
 
 	}
 
+	/**
+	 * Fire hooks on wp_loaded
+	 * This action hook is fired once WordPress, all plugins, and the theme are fully loaded and instantiated.
+	 * https://codex.wordpress.org/Plugin_API/Action_Reference/wp_loaded
+	 */
 	public function on_loaded() {
 
 		add_action( 'admin_menu', array( $this, 'remove_pages' ), 999 );
@@ -80,12 +76,15 @@ class CP_Cleanup {
 		// remove Wp version from scripts
 		add_filter( 'script_loader_src', array( $this, 'remove_wp_ver_css_js' ), 9999 );
 
-    }
+	}
 
-    public function head_cleanup() {
+	/**
+	 * Clean Up WordPress Head
+	 */
+	public function head_cleanup() {
 
 		// remove feed links
-		remove_action('wp_head', 'feed_links_extra', 3);
+		remove_action( 'wp_head', 'feed_links_extra', 3 );
 		// EditURI link
 		remove_action( 'wp_head', 'rsd_link' );
 		// windows live writer
@@ -101,21 +100,20 @@ class CP_Cleanup {
 		// WP Shortlinks
 		remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 
-    }
+	}
 
-
-	/* 
+	/*
 	 * Remove Query Strings From CSS & Javascript
-	 */ 
+	 */
 	public function remove_wp_ver_css_js( $src ) {
 		if ( strpos( $src, 'ver=' ) )
 			$src = remove_query_arg( 'ver', $src );
-		return $src;	
+		return $src;
 	}
 
 	/**
 	 * Remove Pages
-	 * 
+	 *
 	 * http://codex.wordpress.org/Function_Reference/remove_menu_page
 	 *
 	 * @since    1.0.0
@@ -126,7 +124,7 @@ class CP_Cleanup {
 
 		if ( ! ( $current_user instanceof WP_User ) )
 			return;
-		
+
 		// remove_menu_page( 'edit-comments.php' );
 		// remove_menu_page( 'sucuriscan' );
 		// remove_menu_page( 'w3tc_dashboard' );
@@ -141,7 +139,6 @@ class CP_Cleanup {
 
 	}
 
-
 	/**
 	 * Hide Extraneous Plugin Options from the Menu Bar
 	 *
@@ -150,18 +147,18 @@ class CP_Cleanup {
 	public function remove_admin_bar_links() {
 
 		global $wp_admin_bar;
-		$wp_admin_bar->remove_menu('wp-logo');          // Remove the WordPress logo
-		$wp_admin_bar->remove_menu('about');            // Remove the about WordPress link
-		$wp_admin_bar->remove_menu('wporg');            // Remove the WordPress.org link
-		$wp_admin_bar->remove_menu('support-forums');   // Remove the support forums link
-		$wp_admin_bar->remove_menu('feedback');         // Remove the feedback link
-		$wp_admin_bar->remove_menu('comments');         // Remove the comments link
-		// $wp_admin_bar->remove_menu('w3tc-faq');			// Remove W3TC total cache faq
-		// $wp_admin_bar->remove_menu('w3tc-support');		// Remove W3TC total support
-		// $wp_admin_bar->remove_menu('wpseo-menu');       // Remove the Yoast SEO menu
-	
-	}
 
+		$wp_admin_bar->remove_menu( 'wp-logo' );          // Remove the WordPress logo
+		$wp_admin_bar->remove_menu( 'about' );            // Remove the about WordPress link
+		$wp_admin_bar->remove_menu( 'wporg' );            // Remove the WordPress.org link
+		$wp_admin_bar->remove_menu( 'support-forums' );   // Remove the support forums link
+		$wp_admin_bar->remove_menu( 'feedback' );         // Remove the feedback link
+		$wp_admin_bar->remove_menu( 'comments' );         // Remove the comments link
+		// $wp_admin_bar->remove_menu('w3tc-faq');      // Remove W3TC total cache faq
+		// $wp_admin_bar->remove_menu('w3tc-support');  // Remove W3TC total support
+		// $wp_admin_bar->remove_menu('wpseo-menu');    // Remove the Yoast SEO menu
+
+	}
 
 	/**
 	 * Cleanup WP Dashboard
@@ -204,9 +201,8 @@ class CP_Cleanup {
 		// $wp_customize->remove_section( 'static_front_page' );
 		// $wp_customize->remove_section( 'nav' );
 		// $wp_customize->remove_control( 'blogdescription' );
-		
-	}
 
+	}
 
 	/**
 	 * Remove Admin Notices
@@ -216,7 +212,6 @@ class CP_Cleanup {
 	public function remove_admin_notices() {
 		remove_action( 'admin_notices', 'woothemes_updater_notice' );
 	}
-
 
 	/**
 	 * Hide Sensitive Plugins from Plugins Listing
@@ -228,7 +223,7 @@ class CP_Cleanup {
 			'Sucuri Security - Auditing, Malware Scanner and Hardening',
 			'W3 Total Cache'
 		);
-		if ( ! isset($_GET['seeplugins']) || $_GET['seeplugins'] !== 'akismet' ) {
+		if ( ! isset( $_GET['seeplugins'] ) || $_GET['seeplugins'] !== 'akismet' ) {
 			foreach ( $plugins as $key => &$plugin ) {
 				if ( in_array( $plugin["Name"], $hidden ) ) {
 					unset( $plugins[$key] );
